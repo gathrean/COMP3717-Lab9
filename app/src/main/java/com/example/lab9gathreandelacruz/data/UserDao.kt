@@ -6,18 +6,19 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
-// DAO = data access object
-
+// DAO = Data Access Object
 @Dao
 interface UserDao {
-    // these are convenience annotations, we don't really have to use them
 
+    // Retrieves all users from the users_table in the database
     @Query("SELECT * FROM users_table")
     fun getAll(): List<LocalUser>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE) // replace the user with the new one if it already exists
+    // Inserts a user into the users_table in the database
+    @Insert(onConflict = OnConflictStrategy.REPLACE) // Specifies that if there's a conflict (same user), replace it
     fun insert(user: LocalUser)
 
+    // Deletes a specific user from the users_table in the database
     @Delete
-    fun delete(user: LocalUser) // delete a specific user
+    fun delete(user: LocalUser)
 }

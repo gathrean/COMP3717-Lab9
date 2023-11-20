@@ -7,18 +7,18 @@ import com.example.lab9gathreandelacruz.data.UsersRepository
 
 class MyApp : Application() {
 
-    // lazy becomes it's really heavy and we only want to initialize it once
+    // Using lazy initialization for the database instance
     private val db by lazy {
-        // stored locally in our device and stored specifically for our app
+        // Initializes Room database using databaseBuilder method
         Room.databaseBuilder(
             applicationContext,
-            AppDatabase::class.java, // use java because its dependencies were made way before kotlin
-            "my-database"
+            AppDatabase::class.java, // Specifies the database class (AppDatabase) - using Java class reference
+            "my-database" // Specifies the database name as "my-database"
         )
-            .allowMainThreadQueries()
-            .build()
+            .allowMainThreadQueries() // Allows database queries on the main thread (not recommended in production)
+            .build() // Builds the Room database
     }
 
-    // local repository
+    // Lazily initializes the UsersRepository using the database's userDao
     val userRepository by lazy { UsersRepository(db.userDao()) }
 }

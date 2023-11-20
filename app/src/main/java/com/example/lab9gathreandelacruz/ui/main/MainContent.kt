@@ -20,10 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,24 +29,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lab9gathreandelacruz.data.LocalUser
 
+/**
+ * MainContent is the main UI composable function.
+ * It contains the UI for the list of users and the form to add a new user.
+ */
 @Composable
 fun MainContent(usersState: UsersState) {
 
+    // Remember composable used to remember the state of the SignUpState
     val signupState = remember { SignUpState() }
 
+    // Callback to delete a user from the list
     val deleteCallback = { user: LocalUser ->
         usersState.deleteEntity(user)
         usersState.refresh()
     }
 
+    // Callback to replace user data in the form fields
     val replaceCallback = { user: LocalUser ->
         signupState.uid = user.uid.toString()
         signupState.name = user.name!!
         signupState.email = user.email!!
     }
 
+    // Main Column to organize the UI elements
     Column {
 
+        // User input fields for UID, Name, and Email
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -60,14 +66,14 @@ fun MainContent(usersState: UsersState) {
             CustomTextField(signupState.email, signupState.onEmailChanged, "Email: ")
         }
 
-        // Buttons
+        // Buttons for Add and Refresh
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            // "Add" button
+            // "Add" button for adding a new user
             Button(onClick = {
                 usersState.insertEntity(
                     LocalUser(
@@ -80,16 +86,16 @@ fun MainContent(usersState: UsersState) {
                 Text(text = "Add", fontSize = 20.sp)
             }
 
-            // Spacer
+            // Spacer between the buttons
             Spacer(modifier = Modifier.padding(30.dp))
 
-            // "Refresh" button
-            Button(onClick = {
-                usersState.refresh()
-            }) {
+            // "Refresh" button to reload user data
+            Button(onClick = { usersState.refresh() }) {
                 Text(text = "Refresh", fontSize = 20.sp)
             }
         }
+
+        // LazyColumn to display the list of users
         LazyColumn {
             items(usersState.users.size) {
                 UserItem(usersState.users[it], deleteCallback, replaceCallback)
@@ -98,30 +104,35 @@ fun MainContent(usersState: UsersState) {
     }
 }
 
+/**
+ * Composable function to display a single user in the list.
+ */
 @Composable
 fun UserItem(user: LocalUser, delete: (LocalUser) -> Unit, replace: (LocalUser) -> Unit) {
+    // Row to display user information and delete button
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
-            .clickable {
-                replace(user)
-            }
+            .clickable { replace(user) } // Click on a user item triggers replace callback
             .clip(RoundedCornerShape(16.dp))
-            .background(Color(0xFFe7e0eb))
+            .background(Color(0xFFe7e0eb)) // Light purple background
             .height(80.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(user.name!!, fontSize = 20.sp, modifier = Modifier.padding(10.dp))
-        Text(user.email!!, fontSize = 20.sp)
+        Text(user.name!!, fontSize = 20.sp, modifier = Modifier.padding(10.dp)) // Display user name
+        Text(user.email!!, fontSize = 20.sp) // Display user email
         IconButton(
             onClick = { delete(user) }) {
-            Icon(Icons.Rounded.Close, contentDescription = null)
+            Icon(Icons.Rounded.Close, contentDescription = null) // Delete button
         }
     }
 }
 
+/**
+ * Composable function to display a text field with a title.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTextField(value: String, onValueChanged: (String) -> Unit, textFieldTitle: String) {
