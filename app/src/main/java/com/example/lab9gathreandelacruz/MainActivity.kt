@@ -7,6 +7,9 @@ import androidx.compose.runtime.remember
 import com.example.lab9gathreandelacruz.ui.main.MainContent
 import com.example.lab9gathreandelacruz.ui.main.UsersState
 
+/**
+ * Gathrean Dela Cruz, A01167248
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,10 +17,7 @@ class MainActivity : ComponentActivity() {
         val usersRepository = (application as MyApp).userRepository
 
         setContent {
-            val usersState = remember {
-                UsersState(usersRepository)
-            }
-
+            val usersState = remember { UsersState(usersRepository) }
             MainContent(usersState)
         }
     }
