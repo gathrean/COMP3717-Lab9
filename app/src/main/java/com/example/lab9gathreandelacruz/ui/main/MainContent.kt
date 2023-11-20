@@ -1,11 +1,11 @@
 package com.example.lab9gathreandelacruz.ui.main
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -49,35 +49,50 @@ fun MainContent(usersState: UsersState) {
     }
 
     Column {
-        // Sign up form using name and email
-        Column {
-            MyTextField(signupState.name, signupState.onNameChanged)
-            MyTextField(signupState.email, signupState.onEmailChanged)
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp),
+        ) {
+            signupState.uid?.let { CustomTextField(it, signupState.onUidChanged, "UID:") }
+            CustomTextField(signupState.name, signupState.onNameChanged, "Name: ")
+            CustomTextField(signupState.email, signupState.onEmailChanged, "Email: ")
         }
-//        SignUpComposable()
-        Row(modifier = Modifier.fillMaxWidth()) {
+
+        // Buttons
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            // "Add" button
             Button(onClick = {
                 usersState.insertEntity(
                     LocalUser(
+                        uid = signupState.uid?.toIntOrNull(),
                         name = signupState.name,
                         email = signupState.email
                     )
                 )
             }) {
-                Text(text = "Add")
+                Text(text = "Add", fontSize = 20.sp)
             }
+
+            // Spacer
+            Spacer(modifier = Modifier.padding(30.dp))
+
+            // "Refresh" button
             Button(onClick = {
                 usersState.refresh()
             }) {
-                Text(text = "Refresh")
+                Text(text = "Refresh", fontSize = 20.sp)
             }
         }
         LazyColumn {
             items(usersState.users.size) {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    Text(usersState.users[it].name!!, fontSize = 30.sp)
-                    Text(usersState.users[it].name!!, fontSize = 30.sp)
-                }
+                UserItem(usersState.users[it], deleteCallback, replaceCallback)
             }
         }
     }
@@ -109,13 +124,11 @@ fun UserItem(user: LocalUser, delete: (LocalUser) -> Unit, replace: (LocalUser) 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTextField(value: String, onValueChanged: (String) -> Unit) {
-    // "Pass down state"
+fun CustomTextField(value: String, onValueChanged: (String) -> Unit, textFieldTitle: String) {
+    Text(textFieldTitle)
     TextField(
         value = value,
-        onValueChange = {
-            onValueChanged(it)
-        },
+        onValueChange = { onValueChanged(it) },
         modifier = Modifier.fillMaxWidth()
     )
 }
