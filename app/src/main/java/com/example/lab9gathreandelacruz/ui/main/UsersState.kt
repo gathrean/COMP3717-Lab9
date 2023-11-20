@@ -19,4 +19,8 @@ class UsersState(private val usersRepository: UsersRepository) {
     fun insertEntity(user: LocalUser) {
         usersRepository.insertEntity(user)
     }
+
+    fun deleteEntity(user: LocalUser) {
+        usersRepository.deleteEntity(user)
+    }
 }
