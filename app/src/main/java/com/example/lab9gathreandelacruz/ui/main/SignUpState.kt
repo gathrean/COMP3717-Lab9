@@ -9,9 +9,7 @@ import androidx.compose.runtime.setValue
 class SignUpState {
     // For the name field
     var name by mutableStateOf("")
-    val onNameChanged: (String) -> Unit = {
-        name = it
-    }
+    val onNameChanged: (String) -> Unit = { name = it }
 
     // For the email field
     var email by mutableStateOf("")
@@ -21,4 +19,7 @@ class SignUpState {
     }
 
     var validEmail = false
+
+    var uid by mutableStateOf<String?>("")
+    val onUidChanged: (String) -> Unit = { uid = it }
 }

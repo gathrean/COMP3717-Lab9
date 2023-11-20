@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class LocalUser(
     // uid = unique identifier
     // this is the primary key so it has to be unique
-    @PrimaryKey(autoGenerate = true) val uid: Int? = null,
+    @PrimaryKey(autoGenerate = true) val uid: Int? = null, // Auto generate a unique id
     @ColumnInfo(name = "first_name") val name: String? = null,
     @ColumnInfo(name = "user_email") val email: String? = null
 )
