@@ -12,6 +12,10 @@ class UsersRepository(private val userDao: UserDao) {
         return userDao.getAll()
     }
 
+    fun deleteEntity(user: LocalUser) {
+        userDao.delete(user)
+    }
+
     // business logics would go here
     // for example, preventing duplicate emails
 }
