@@ -108,7 +108,7 @@ fun UserItem(user: LocalUser, delete: (LocalUser) -> Unit, replace: (LocalUser) 
                 replace(user)
             }
             .clip(RoundedCornerShape(16.dp))
-            .background(Color(0xFFFFFFFF))
+            .background(Color(0xFFe7e0eb))
             .height(80.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
